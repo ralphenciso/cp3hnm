@@ -1,0 +1,9 @@
+{
+    "development": {
+        "database": "hnmdb",
+        "host": "localhost"
+    },
+    "production": {
+        "use_env_variable": "mongodb+srv://admin:<password>@cluster0-kq8m3.mongodb.net/test?retryWrites=true&w=majority"
+    }
+}

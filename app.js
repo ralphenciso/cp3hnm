@@ -24,7 +24,7 @@ const express               = require('express'),
 
 
 app.set('view engine', 'ejs');
-mongoose.connect("mongodb://localhost/hnmdb", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://admin:admin123@cluster0-kq8m3.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true});
 app.use(require("express-session")({
     secret:"Harmony and Melody",
     resave: false,
