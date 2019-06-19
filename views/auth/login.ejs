@@ -1,0 +1,31 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <form action="/login" method="POST" class="mt-4 w-75 mx-auto" id="loginform">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Username</span>
+            </div>
+            <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Password</span>
+            </div>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <button class="btn btn-block btn-primary">Login</button>
+    </form>
+
+    <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger mt-4 w-75 mx-auto text-center" role="alert" >
+            <%= error %>
+        </div>
+    <% } %>
+    
+</div>
+
+
+
+<% include ../partials/footer %>

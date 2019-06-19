@@ -1,0 +1,192 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-2 col-md-3">
+            <div class="filters mt-3">
+                <div class="card p-2 my-3">
+                    <div data-toggle="buttons" >
+                        <label class="btn btn-outline-dark btn-block active userfilter" data-filter="all">
+                            <input type="radio" name="userfilter" class="d-none">All
+                        </label>
+                        <label class="btn btn-outline-dark btn-block userfilter" data-filter="<%= currentUser.firstname%> <%= currentUser.lastname%>" id="user">
+                            <input type="radio" name="userfilter userfilter" class="d-none" >Own
+                        </label>
+                    </div>
+                </div>
+                <div class="card p-2 my-3">
+                    <div data-toggle="buttons">
+                        <label class="btn btn-outline-dark btn-block active instructorfilter" data-filter="all">
+                            <input type="radio" name="instructorfilter" class="d-none">All
+                        </label>
+                        <% instructorsAll.forEach(instructor => { %> 
+                            <label class="btn btn-outline-dark btn-block instructorfilter" data-filter="<%= instructor %>">
+                                <input type="radio" name="instructorfilter" class="d-none"><%= instructor %>
+                            </label>
+                        <% }) %>
+                    </div>
+     
+                </div>
+             
+                
+                <div class="card p-2 my-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addReview">
+                        Add Review
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-10 col-md-9 mt-3">
+
+            <% instructorsAll.forEach(instructor => { %> 
+                <div class="card mb-3 cardsreview" data-filter="<%= instructor %>"</div>
+                    <div class="reviewhead">
+                        <div class="row no-gutters">
+                            <div class="col-md-4 reviewimage">
+                                <img src="<%= instructorsList.filter(v => v.name === instructor)[0].image %>" class="card-img">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= instructor %> </h5>
+                                    <p class="mb-2"><strong>Lessons: </strong>
+                                        <%= instructorsList.filter(v => v.name === instructor)[0].instruments.map(v => v.capitalize()).join(' | ') %>
+                                    </p>
+                                    <h5 class="my-2"><span class="averagerating starcolor" data-name="<%= instructor %>"></span></h5 class="my-2">
+                                    <p class="card-text"><%= instructorsList.filter(v => v.name === instructor)[0].profile %></p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body reviewsbody" data-name="<%= instructor %>">
+                     
+                    </div>
+                </div>
+                
+            <% }) %>
+            
+        </div>
+    </div>
+
+
+    <!-- Add Review Modal -->
+    <div class="modal fade" id="addReview" tabindex="-1" role="dialog" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/reviews" method="POST" id="reviewForm">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Instructor</span>
+                            </div>
+                            <select class="custom-select" name="instructor" id="instructor">
+                                <option selected >Choose...</option>
+                                <% instructorsEnrolled.forEach(instructor => { %> 
+                                    <option value="<%= instructor %>" class="text-capitalize" >
+                                        <%= instructor %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Lesson</span>
+                            </div>
+                            <select class="custom-select text-capitalize" name="lesson" id="lessonsEnrolled">
+                            </select>
+                        </div>
+
+                        <!-- stars rating -->
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rating</span>
+                            </div>
+                            <div class="form-control">
+                                <div class="rating">
+                                        <label>
+                                            <input type="radio" name="rating" value="1" class="d-none"/>
+                                            <span class="star" data-value="1">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="2" class="d-none"/>
+                                            <span class="star" data-value="2">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="3" class="d-none"/>
+                                            <span class="star" data-value="3">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="4" class="d-none"/>
+                                            <span class="star" data-value="4">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="5" class="d-none"/>
+                                            <span class="star" data-value="5">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="6" class="d-none"/>
+                                            <span class="star" data-value="6">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="7" class="d-none"/>
+                                            <span class="star" data-value="7">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="8" class="d-none"/>
+                                            <span class="star" data-value="8">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="9" class="d-none"/>
+                                            <span class="star" data-value="9">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating" value="10" class="d-none"/>
+                                            <span class="star" data-value="10">★</span>
+                                        </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Review</span>
+                            </div>
+                            <textarea type="textarea" class="form-control" name="review" style="height: 150px"></textarea>
+                        </div>
+
+                        <input type="text" name="student" class="d-none" value="<%= currentUser.firstname + ' ' + currentUser.lastname %>">
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="reviewForm">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    const enrollments = <%- JSON.stringify(enrollments) %>
+    const reviews = <%- JSON.stringify(reviews) %>
+</script>
+
+<script src = '/scripts/addreview.js'></script>
+
+
+<% include ../partials/footer %>

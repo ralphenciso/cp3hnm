@@ -1,0 +1,65 @@
+<% include ../partials/header %>
+
+<div class="container">
+        <form action="/register" method="POST" class="mt-4 w-75 mx-auto" id="regform">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Username</span>
+                </div>
+                <input type="text" class="form-control" name="username" required minlength="4" maxlength="30">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">E-mail</span>
+                </div>
+                <input type="email" class="form-control" name="user[email]" required required minlength="4" maxlength="30">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Password</span>
+                </div>
+                <input type="password" class="form-control" id="password" name="password" required required minlength="4" maxlength="30">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Confirm Password</span>
+                </div>
+                <input type="password" class="form-control" required required minlength="4" maxlength="30" id="cpassword">
+            </div>
+
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">First Name</span>
+                </div>
+                <input type="text" class="form-control" name="user[firstname]" required required minlength="4">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Last Name</span>
+                </div>
+                <input type="text" class="form-control" name="user[lastname]" required required minlength="4">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="role">Role</label>
+                </div>
+                <select class="custom-select" id="role" name="user[role]" required>
+                    <option value="student" selected>Student</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+            </div>
+
+            <button class="btn btn-block btn-primary" id="submit">Submit</button>
+        </form>
+
+        
+        <div class="mt-4 mx-auto w-75 alert alert-danger d-none text-center" id="error" role="alert">
+        </div>
+</div>
+
+<script src="/scripts/register.js"></script>
+
+<% include ../partials/footer %>

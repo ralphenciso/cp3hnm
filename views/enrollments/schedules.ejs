@@ -1,0 +1,46 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 p-3">
+            <% enrollments.forEach(enrollment => { %>
+                <div class="col-12 p-3">
+                    <div class="card" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-12 text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title text-capitalize"><%= enrollment.lesson %> Lessons</h5>
+                                    <h6 class="card-title"> <strong>Instructor: </strong> <%= enrollment.instructor %></h6>
+                                    <p>
+                                        <strong>Schdule</strong> <br>
+                                        <strong>Start Date: </strong><%= enrollment.startdate.toDateString().slice(3) %>  <br>
+                                        <strong>End Date:  </strong><%= enrollment.enddate.toDateString().slice(3) %> <br>
+                                        <strong>Time:  </strong><%= enrollment.time === 'AM' ? 'AM (9AM - 12AM)' : 'PM (2PM - 5PM)' %>
+                                    </p>
+                                    <p class="card-text"><small class="<%= enrollment.status === 'Approved' ? 'text-success' : 'text-danger' %>">Status: <%= enrollment.status %></small></p>
+                                </div>
+                            </div>
+                        </div>
+                        <% if (enrollment.status.toLowerCase() === "for confirmation" && currentUser.role === 'student') { %>
+                            <form action="/enrollments/<%= enrollment._id %>?_method=DELETE" method="POST">
+                                <button class="scheddel"><i class="material-icons">delete</i></button>    
+                            </form>
+                        <% } %>
+                    </div>
+                    
+                </div>
+            <% }) %>
+        </div>
+        <div class="col-6 p-2 mt-4 material-theme green" id="schedcalendar" data-month-format="month YYYY">
+
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    var data = <%-JSON.stringify(enrollments) %> 
+</script>
+<script src="/scripts/schedule.js"></script>
+
+<% include ../partials/footer %>

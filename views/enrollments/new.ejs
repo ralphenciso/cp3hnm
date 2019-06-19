@@ -1,0 +1,106 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+
+    <form action="/enrollments" method="POST" class="mt-4 w-75 mx-auto" id="enrollmentform">
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Lesson</span>
+            </div>
+            <select class="custom-select text-capitalize" id="lessonselect" name="lesson">
+                    <% map.forEach(obj => { %>
+                        <option value="<%= obj.instrument %>" class="text-capitalize" <%= lesson.instrument === obj.instrument ? 'selected' : '' %>>
+                            <%= obj.instrument %>
+                        </option>
+                    <% }) %>
+            </select>
+
+        </div>
+
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Program</span>
+            </div>
+            <div class="form-control h-auto" id="programs">
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="program" id="pall" class="custom-control-input" value="all" checked>
+                    <label class="custom-control-label" for="pall">All</label>
+                </div>
+                <% lesson.programs.forEach((program,i) => { %>
+                <div class="custom-control custom-radio">
+                    <input type="radio" name="program" id="p<%=i%>" class="custom-control-input" value="<%=program.name%>" data-duration="<%=program.duration%>">
+                    <label class="custom-control-label" for="p<%=i%>"><%=program.name%> - <%=program.duration%> Weeks</label>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="instructorselect">Pick Instructor</label>
+            </div>
+            <select class="custom-select" id="instructorselect" name="instructor">
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text">Start Date</label>
+            </div>
+            <input type="date" class="form-control" name='startdate' readonly>
+            <div class="input-group-prepend">
+                <label class="input-group-text">End Date</label>
+            </div>
+            <input type="date" class="form-control" name='enddate' readonly>
+            <div class="input-group-prepend">
+                <label class="input-group-text">Time</label>
+            </div>
+            <select class="custom-select" name="time" id="timeselect" disabled>
+                    <option value="AM">AM</option> 
+                    <option value="PM">PM</option>
+            </select>
+            <input type="text" name="time" value="" class="d-none" id="timeselectinput">
+            <input type="text" name="student" value="<%=currentUser.firstname %> <%=currentUser.lastname %>" class="d-none">
+        </div>
+
+       
+
+    </form>
+
+    <div class="alert alert-danger w-75 mx-auto text-center d-none" role="alert" id="schedconflict">
+            Selected Schedule has conflict
+    </div>
+
+    <div class="w-75 mx-auto card flex-row" id="calendar">
+        <div class="col-6">
+            <h3 class="text-center">AM Class: 9AM - 12AM </h3>
+           <div class="material-theme" id="calendarAM" data-month-format="month YYYY"></div>
+       </div>
+        <div class="col-6">
+            <h3 class="text-center">PM Class: 2PM - 5PM </h3>
+           <div class="material-theme orange" id="calendarPM" data-month-format="month YYYY"> </div>
+       </div>
+    
+    </div>
+
+
+    <button class="btn btn-block btn-primary w-75 mx-auto mt-4" form="enrollmentform" id="submitform">Enroll</button>
+
+    <div class="alert alert-danger mt-4 w-75 mx-auto text-center d-none" role="alert" id="error">
+    </div>
+
+
+</div>
+
+
+<script>
+    var data = <%- JSON.stringify(map) %>;
+    var schedule = <%- JSON.stringify(schedule) %>
+</script>
+
+<script src="/scripts/enrollment.js"></script>
+
+
+<% include ../partials/footer %>

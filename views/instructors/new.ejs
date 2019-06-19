@@ -1,0 +1,46 @@
+<% include ../partials/header %>
+
+
+<form action="/instructors" method="POST" class="mt-4 w-50 mx-auto" id="newlessonform" enctype="multipart/form-data">
+    <div class="input-group mb-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Name</span>
+        </div>
+        <input type="text" class="form-control" name="name">
+    </div>
+    <div class="input-group mb-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Image</span>
+        </div>
+        <input type="file" class="form-control" name="image">
+    </div>
+
+    <div class="input-group mb-2" >
+        <div class="input-group-prepend">
+            <span class="input-group-text">Profile</span>
+        </div>
+        <textarea type="textarea" class="form-control" name="profile"></textarea>
+    </div>
+
+
+    <div class="lead mb-2 d-flex justify-content-center align-items-center">
+        <strong class="ml-auto">Instruments</strong>
+        <i class="material-icons ml-auto" id="addinstrument">add</i>
+    </div>
+
+    <div class="input-group mb-3 instrumentinput">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Instrument</span>
+        </div>
+        <input type="text" class="form-control w-50" name="instruments[]">
+        
+        <div style="width:34px"></div>
+    </div>
+    
+    <button class="btn btn-block btn-primary" id="submit">Add</button>
+
+</form>
+
+<script src="/scripts/addinstructor.js"></script>
+
+<% include ../partials/footer %>

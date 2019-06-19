@@ -1,0 +1,132 @@
+<% include ../partials/header %>
+
+
+<div class="jumbotron text-center mb-3">
+    <div class="container">
+        <h1>Unleash the musician in you</h1>
+        <p>Pick your instrument and book a lesson today!</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- todo show only for admin -->
+    <% if(currentUser && currentUser.role === 'admin') { %>
+        <form action="/lessons/new">
+            <button class="mx-auto btn btn-block btn-primary" >Add New</button>
+        </form>
+    <% } %>
+
+    <div class="row lessons">
+        <% Lessons.forEach((lesson) => { %>
+            <div class="col-6 col-md-4 py-3">
+                <div class="card">
+                    <h2 class="text-center"><%= lesson.instrument.capitalize() %> Lessons</h2>
+                    <img src="<%= lesson.image %>" class="card-img-bottom">
+                    <div class="text-center mt-2">
+                        <% lesson.programs.forEach(program => { %>
+                            <p><strong><%= program.name %> - <%= program.duration %> Weeks</strong> <br>Schedule: AM(9-12) or PM(2-5)</p>
+                        <% }) %> 
+                    </div>
+
+                    <% if(!currentUser || currentUser.role === 'student') { %>
+                        <form action="/enrollments/new" class="m-2">
+                            <input type="text" name="id" class="d-none" value="<%= lesson._id %>">
+                            <button class="btn btn-block btn-primary">Enroll Now</button>
+                        </form>
+                    <% } %>
+
+                    <% if(currentUser && currentUser.role === 'admin') { %>
+                        <button type="button" class="btn btn-block btn-primary m-2 w-auto" data-toggle='modal' data-target='#edit<%= lesson._id %>'>Edit</button>
+                        <button type="button" class="btn btn-block btn-primary m-2 w-auto" data-toggle='modal' data-target='#del<%= lesson._id %>'>Delete</button>
+                    <% } %>
+                  
+                </div>
+            </div>
+            <% if(currentUser && currentUser.role === 'admin') { %>
+                <!-- Edit Modal -->
+                <div class="modal fade" id="edit<%= lesson._id %>" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Lesson</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/lessons/<%=lesson._id%>?_method=PUT" method="POST" class="mx-auto" id="editform<%=lesson._id%>" enctype="multipart/form-data">
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Instrument</span>
+                                            </div>
+                                            <input type="text" class="form-control" name="instrument" value="<%= lesson.instrument.capitalize() %>">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Image</span>
+                                            </div>
+                                            <input type="file" class="form-control" name="image">
+                                        </div>
+                                
+                                        <div class="lead mb-2 d-flex justify-content-center align-items-center">
+                                            <strong class="ml-auto">Programs</strong>
+                                            <i class="material-icons ml-auto addprogram">add</i>
+                                        </div>
+
+                                        <% lesson.programs.forEach((program,i) => { %>
+                                            <div class="input-group mb-3 programinput" >
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Name</span>
+                                                </div>
+                                                <input type="text" class="form-control w-25" name="pnames[]" value="<%= program.name %>">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Duration</span>
+                                                </div>
+                                                <input type="number" class="form-control" name="pduration[]" min=1 value="<%= program.duration %>">
+                                                <% if(i === 0 ) { %>
+                                                    <div style="width:34px"></div>
+                                                <% } else { %>
+                                                    <i class="material-icons ml-auto deleteprogram">delete</i>
+                                                <% } %>
+                                            </div>
+                                        <% }) %> 
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" form="editform<%=lesson._id%>">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="del<%= lesson._id %>" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Lesson?</h5>
+                                    <button type="button" class="btn btn-secondary ml-auto mr-2" data-dismiss="modal">Cancel</button>
+                                    <form action="/lessons/<%= lesson._id %>?_method=DELETE" method="POST"><button class="btn btn-primary">Confirm</button></form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <% } %>
+
+        <% }) %>
+    </div>
+
+
+
+
+</div>
+
+
+
+<script src="/scripts/editlesson.js"></script>
+
+
+
+<% include ../partials/footer %>
